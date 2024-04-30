@@ -1,8 +1,9 @@
 
 import qs from 'qs'
-import { Integration, secrets } from '.botpress'
+import * as botpress from '.botpress'
 
-const integration = new Integration({
+
+const integration = new botpress.Integration({
   handler: async ({ req, client, ctx }) => {
     if (ctx.configuration.secret && req.headers['x-bp-secret'] !== ctx.configuration.secret) {
       throw new Error('Invalid secret')
@@ -21,12 +22,9 @@ const integration = new Integration({
     } catch (err) {}
 
     await client.createEvent({
-      type: 'webhook:event',
+      type: 'breaking-integrations/darkhook:event',
       payload: {
-        body,
-        query,
-        method,
-        path: req.path,
+        conversationId: body.conversationId,
       },
     })
   },
@@ -36,4 +34,4 @@ const integration = new Integration({
   channels: {},
 })
 
-export default sentryHelpers.wrapIntegration(integration)
+export default integration

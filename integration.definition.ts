@@ -1,12 +1,11 @@
 import { IntegrationDefinition } from '@botpress/sdk'
-import { sentry as sentryHelpers } from '@botpress/sdk-addons'
 import { z } from 'zod'
 
 export default new IntegrationDefinition({
-  name: 'webhook',
+  name: 'breaking-integrations/darkhook',
   version: '0.2.0',
-  title: 'Webhook',
-  description: 'This integration allows your bot to interact with Webhook.',
+  title: 'Darkhook',
+  description: 'This integration allows your bot to interact with Darkhook.',
   icon: 'icon.svg',
   readme: 'readme.md',
   configuration: {
@@ -18,13 +17,9 @@ export default new IntegrationDefinition({
     event: {
       schema: z
         .object({
-          body: z.record(z.any()),
-          query: z.record(z.any()),
-          path: z.string(),
-          method: z.enum(['GET', 'POST']),
+          conversationId: z.string(),
         })
         .passthrough(),
     },
   },
-  secrets: [...sentryHelpers.COMMON_SECRET_NAMES],
 })
